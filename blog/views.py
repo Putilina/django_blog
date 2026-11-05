@@ -3,6 +3,6 @@ from django.http import HttpResponse
 
 
 def index(request):
-    return HttpResponse("<h1>Привет! Это мой Django-блог</h1>")
+    return HttpResponse("<h1>Мой Django-блог работает!</h1>")
 
 
