@@ -1,35 +1,14 @@
+{% extends "blog/base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ page_title }}</title>
-    <link rel="stylesheet" href="{% static 'blog/css/blog.css' %}">
-</head>
-<body>
-    <main class="container">
-        <nav class="nav">
-            <a href="{% url 'home' %}">Главная</a>
-            <a href="{% url 'about' %}">Обо мне</a>
-        </nav>
 
-        <h1>{{ page_title }}</h1>
+{% block title %}Лента публикаций{% endblock title %}
 
-        <section class="post-list">
-            {% for post in posts %}
-                <article class="post-card{% if post.rating > 3 %} post-card--featured{% endif %}">
-                    {% if post.image %}
-                        <img src="{% static 'blog/images/' %}{{ post.image }}" alt="{{ post.title }}">
-                    {% else %}
-                        <p class="muted">Без иллюстрации</p>
-                    {% endif %}
+{% block content %}
+    <h1>Лента публикаций</h1>
+    <section class="post-list">
+        {% for post in posts %}
+            {% include "blog/post_card_include.html" %}
+        {% endfor %}
+    </section>
 
-                    <h2>{{ post.title }}</h2>
-                    <p class="muted">{{ post.author }}</p>
-                    <p>{{ post.description }}</p>
-                </article>
-            {% endfor %}
-        </section>
-    </main>
-</body>
-</html>
+{% endblock %}

@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import Http404
 
 from .data import POSTS
 
@@ -19,3 +20,14 @@ def about(request):
     return render(request, "blog/about.html", context)
 
 
+def post_detail(request, post_slug):
+    post = next((p for p in POSTS if p["slug"] == post_slug and p["is_published"]), None)
+    
+    if post is None:
+        raise Http404("Публикация не найдена")
+        
+    context = {
+        "post": post,
+        "page_title": post["title"],
+    }
+    return render(request, "blog/post_detail.html", context)

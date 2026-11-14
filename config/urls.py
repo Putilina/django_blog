@@ -7,4 +7,6 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", views.post_list, name="home"),
     path("about/", views.about, name="about"),
+    # Новый маршрут для детали:
+    path("posts/<slug:post_slug>/", views.post_detail, name="post_detail"),
 ]
