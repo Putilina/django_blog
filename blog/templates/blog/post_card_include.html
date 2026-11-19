@@ -1,15 +1,15 @@
 {% load static %}
 
-<article class="post-card {% if post.rating > 3 %} post-card--featured{% endif %}">
-    {% if post.image %}
-        <img src="{% static "blog/images/" %}{{ post.image }}" alt="{{post.title}}">
-    {% else %}
-        <p class"muted">Без иллюстрации</p>
-    {% endif %}
+<article class="post-card{% if post.rating > 3 %} post-card--featured{% endif %}">
+    <button type="button"
+            class="post-card__refresh"
+            hx-get="{% url 'post_card_fragment' post_slug=post.slug %}"
+            hx-target="#card-body-{{ post.slug }}"
+            hx-swap="innerHTML">
+        Обновить
+    </button>
 
-    <h2>
-        <a href="{% url "post_detail" post_slug=post.slug %}">{{ post.title }}</a>
-    </h2>
-    <p class="muted">{{ post.author }}</p>
-    <p>{{ post.description }}</p>
+    <div class="post-card__body" id="card-body-{{ post.slug }}">
+        {% include "blog/post_card_body.html" %}
+    </div>
 </article>

@@ -9,4 +9,5 @@ urlpatterns = [
     path("about/", views.about, name="about"),
     # Новый маршрут для детали:
     path("posts/<slug:post_slug>/", views.post_detail, name="post_detail"),
+    path("posts/card/<slug:post_slug>/", views.post_card_fragment, name="post_card_fragment"),
 ]

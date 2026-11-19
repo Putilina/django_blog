@@ -1,0 +1,13 @@
+{% load static %}
+
+{% if post.image %}
+    <img src="{% static 'blog/images/' %}{{ post.image }}" alt="{{ post.title }}">
+{% else %}
+    <p class="muted">Без иллюстрации</p>
+{% endif %}
+
+<h2>
+    <a href="{% url 'post_detail' post_slug=post.slug %}">{{ post.title }}</a>
+</h2>
+<p class="muted">{{ post.author }}</p>
+<p>{{ post.description }}</p>

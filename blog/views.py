@@ -3,6 +3,12 @@ from django.http import Http404
 
 from .data import POSTS
 
+def post_card_fragment(request, post_slug):
+    post = next((post for post in POSTS if post["slug"] == post_slug and post["is_published"]), None)
+    if post is None:
+        raise Http404("Публикация не найдена")
+    return render(request, "blog/post_card_body.html", {"post": post})
+
 
 def post_list(request):
     published = [post for post in POSTS if post["is_published"]]
