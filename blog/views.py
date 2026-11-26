@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import Http404
 
-from .data import POSTS
+from .data import POSTS, CATEGORIES
 
 def post_card_fragment(request, post_slug):
     post = next((post for post in POSTS if post["slug"] == post_slug and post["is_published"]), None)
@@ -11,10 +11,23 @@ def post_card_fragment(request, post_slug):
 
 
 def post_list(request):
-    published = [post for post in POSTS if post["is_published"]]
+    q = request.GET.get("q", "").strip()
+    cat = request.GET.get("cat", "").strip()
+
+    posts = [post for post in POSTS if post["is_published"]]
+
+    if cat:
+        posts = [post for post in posts if post["category"]["name"] == cat]
+
+    if q:
+        posts = [post for post in posts if q.lower() in post["title"].lower()]    
+
     context = {
         "page_title": "Лента публикаций",
-        "posts": published,
+        "posts": posts,
+        "categories": CATEGORIES,
+        "q": q,
+        "cat": cat,
     }
     return render(request, "blog/post_list.html", context)
 

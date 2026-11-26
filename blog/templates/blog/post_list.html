@@ -1,14 +1,58 @@
 {% extends "blog/base.html" %}
 {% load static %}
 
-{% block title %}Лента публикаций{% endblock title %}
+{% block title %}Лента публикаций{% endblock %}
 
 {% block content %}
-    <h1>Лента публикаций</h1>
+    <h1>{{ page_title }}</h1>
+
+    <form method="get" action="{% url 'home' %}" class="search-form">
+        <label for="search">Поиск:</label>
+
+        <input type="search" id="search" name="q" value="{{ q }}" placeholder="Введите заголовок...">
+        
+        <fieldset class="search-cats">
+            <legend>Категория:</legend>
+            
+            <!-- Кнопка "Все категории" -->
+            <label>
+                <input type="radio" name="cat" value="" {% if not cat %}checked{% endif %}>
+                Все категории
+            </label>
+
+            {% for category_item in categories %}
+                <label>
+                    <input type="radio" name="cat" value="{{ category_item.name }}" {% if cat == category_item.name %}checked{% endif %}>
+                    {{ category_item.name }}
+                </label>
+            {% endfor %}
+        </fieldset>
+
+        <button type="submit">Найти</button>
+        <a href="{% url 'home' %}">Сбросить</a>
+    </form>
+
     <section class="post-list">
         {% for post in posts %}
             {% include "blog/post_card_include.html" %}
+        {% empty %}
+            <!-- Если постов нет, смотрим: почему? -->
+            {% if q or cat %}
+                <div class="empty-state">
+                    <h2>Ничего не найдено</h2>
+                    <p>
+                        По запросу 
+                        {% if q %}«{{ q }}»{% endif %} 
+                        {% if q and cat %}в категории{% endif %} 
+                        {% if cat %}«{{ cat }}»{% endif %} 
+                        совпадений нет.
+                    </p>
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <p>Публикаций пока нет.</p>
+                </div>
+            {% endif %}
         {% endfor %}
     </section>
-
 {% endblock %}
