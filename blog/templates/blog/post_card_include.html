@@ -1,11 +1,14 @@
 {% load static %}
 
-<article class="post-card{% if post.rating > 3 %} post-card--featured{% endif %}">
+<!-- Добавили id к самой карточке -->
+<article class="post-card{% if post.rating > 3 %} post-card--featured{% endif %}" id="card-{{ post.slug }}">
+    
     <button type="button"
             class="post-card__refresh"
             hx-get="{% url 'post_card_fragment' post_slug=post.slug %}"
             hx-target="#card-body-{{ post.slug }}"
-            hx-swap="innerHTML">
+            hx-swap="innerHTML"
+            hx-indicator="#card-{{ post.slug }}"> <!-- Индикатор указывает на всю карточку -->
         Обновить
     </button>
 

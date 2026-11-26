@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import Http404
-
+from django.core.paginator import Paginator
 from .data import POSTS, CATEGORIES
 
 def post_card_fragment(request, post_slug):
@@ -22,13 +22,21 @@ def post_list(request):
     if q:
         posts = [post for post in posts if q.lower() in post["title"].lower()]    
 
+    paginator = Paginator(posts, 5)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
     context = {
         "page_title": "Лента публикаций",
-        "posts": posts,
+        "posts": page_obj.object_list,
+        "page_obj": page_obj,
         "categories": CATEGORIES,
         "q": q,
         "cat": cat,
     }
+
+    if request.htmx:
+        return render(request, "blog/post_list_results.html", context)
     return render(request, "blog/post_list.html", context)
 
 

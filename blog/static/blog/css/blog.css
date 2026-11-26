@@ -180,3 +180,13 @@ a {
   gap: 4px;
   cursor: pointer;
 }
+#results {
+  transition:
+    filter 0.2s ease,
+    opacity 0.2s ease;
+}
+#results.htmx-request {
+  filter: blur(4px);
+  opacity: 0.6;
+  pointer-events: none;
+}
